@@ -10,42 +10,55 @@
             @endif
 
 
-    <h1>الأصناف</h1>
-    @foreach ($data as $item)
+    <h1 class="d-flex justify-content-center">الأصناف</h1>
+   
 
         <table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
       <th scope="col">اسم التصنيف</th>
+      <th scope="col">نوع التصنيف</th>
       <th scope="col">حذف التصنيف</th>
     </tr>
   </thead>
+  
   <tbody>
+  @foreach ($category as $item)
     <tr>
       <th scope="row">{{$item->id}}</th>
       <td>{{$item->Category}}</td>
-      <td><a  onclick="return confirm('are you sure you wnat delete ( {{$item->Category}} )')" href="{{url('/delete_category',$item->id)}}" class="btn btn-danger">Delete</a></td>
+      <td>
+        @if($item->refundable)
+          <span class="badge bg-success">قابل للاسترداد</span>
+        @else
+          <span class="badge bg-danger">غير قابل للاسترداد</span>
+        @endif
+      
+      <td><a  onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->Category}} )')" href="{{url('/delete_category',$item->id)}}" class="btn btn-danger">حذف</a></td>
     </tr>
    
-    
+    @endforeach
   </tbody>
+  
+ 
 </table>
 
 
 
+    <br><br><br>
 
 
-    @endforeach
-    <form action="{{url('/add_category')}}" method="post">
+    <h3 class="d-flex justify-content-center">إضافة تصنيف</h3>
+    <form action="{{url('/add_category')}}" method="post" class="d-flex justify-content-center">
         @csrf
-        <h3>إضافة تصنيف</h3>
-            <input type="text" name="caregory" placeholder="اكتب التصنيف الجديد">
-            <input type="submit" placeholder="ارسال">
-
-
-
-
+        
+        <input type="text" name="caregory" placeholder="اكتب التصنيف الجديد">
+        <select name="refundable" class="form-select" aria-label="Default select example">
+            <option value="1">قابل للاسترداد</option>
+            <option value="0">غير قابل للاسترداد</option>
+        </select>
+        <input type="submit" placeholder="ارسال">
     </form>
 
 <hr>

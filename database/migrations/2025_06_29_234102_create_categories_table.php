@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('Category'); 
+            $table->string('Category');
+            $table->boolean('refundable')->default(true); 
             $table->timestamps();
         });
     }
