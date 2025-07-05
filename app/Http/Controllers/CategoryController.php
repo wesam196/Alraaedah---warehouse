@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\category;
-
+use App\Models\Product;
 
 
 class CategoryController extends Controller
 {
     public function index(){
         $data=category::all();
+        $products = Product::all();
 
-
-        return view('admin.dashboard' , ['category'=>$data]);
+        return view('admin.dashboard' , ['category'=>$data , 'products'=>$products]);
     }
 
     public function create(Request $request){

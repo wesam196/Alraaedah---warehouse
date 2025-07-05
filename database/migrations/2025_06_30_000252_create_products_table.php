@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('productName');
             $table->unsignedBigInteger("quantity");
             $table->unsignedBigInteger('category');
-
+            $table->unsignedInteger('pledge')->nullable()->default(0); // Nullable pledge field
             $table->timestamps();
 
 
-            $table->foreign('category')->references('id')->on('category')->onDelete('cascade');
+            $table->foreign('category')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
