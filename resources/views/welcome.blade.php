@@ -10,19 +10,9 @@
       background-color: #f5f5f5;
     }
 
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    
 
-    header .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+    
 
     .container {
       padding: 20px;
@@ -80,10 +70,7 @@
 </head>
 <body>
 
-  <header>
-    <div class="logo">شعار الشركة</div>
-    <div>لوحة تحكم المنتجات</div>
-  </header>
+  @include('layouts.nav')
 
   <div class="container">
     <div class="controls">

@@ -15,6 +15,10 @@
 
 </head>
 <body>
+
+@include('layouts.nav')
+
+
 @if(session()->has('msg'))
             <div class="alert alert-success">
             {{session()->get('msg')}}
@@ -69,16 +73,28 @@
     <br><br><br>
 
 
-    <h3 class="d-flex justify-content-center">إضافة تصنيف</h3>
-    <form action="{{url('/add_category')}}" method="post" class="d-flex justify-content-center">
+    
+    <form action="{{url('/add_category')}}" method="post" class="container mt-5">
         @csrf
-        
-        <input type="text" name="caregory" placeholder="اكتب التصنيف الجديد" required>
-        <select name="refundable" class="form-select" aria-label="Default select example">
-            <option value="1">قابل للاسترداد</option>
-            <option value="0">غير قابل للاسترداد</option>
-        </select>
-        <input type="submit" placeholder="ارسال">
+        <h1 class="d-flex justify-content-center">إضافة تصنيف</h1>
+        <div class="container">
+          <div class="row">
+              <div class="col-md-6 offset-md-3">
+                   <div class="mb-3">
+                      <label for="caregory" class="form-label">اسم التصنيف</label>
+                      <input type="text" class="form-control" name="caregory" placeholder="اكتب التصنيف الجديد" required>
+                      <br>
+                      <label for="refundable" class="form-label">نوع التصنيف</label>
+                      <select name="refundable" class="form-select" aria-label="Default select example">
+                          <option value="1">قابل للاسترداد</option>
+                          <option value="0">غير قابل للاسترداد</option>
+                      </select>
+                      <input type="submit" placeholder="ارسال" class="btn btn-primary mt-3">
+        </div>
+              </div>
+          </div>   
+          </div>
+          
     </form>
 
 <hr>
@@ -133,22 +149,37 @@
 
     <br><br><br>
 
-    <h3 class="d-flex justify-content-center">إضافة منتج</h3>
-    <form action="{{url('/add_product')}}" method="post" class="d-flex justify-content-center">
+    <form action="{{url('/add_product')}}" method="post" class="container mt-5">
         @csrf
-        
-        <input type="text" name="productName" placeholder="اكتب اسم المنتج" required>
-        <input type="number" name="quantity" placeholder="اكتب الكمية الإجمالية" required>
-        <select name="category" class="form-select" aria-label="Default select example">
-            @foreach ($category as $item)
-              @if($item->refundable)
-                <option value="{{$item->id}}">{{$item->Category}} - (قابل للاسترداد)</option>
-              @else 
-                <option value="{{$item->id}}">{{$item->Category}} - (غير قابل للاسترداد )</option>
-              @endif
-            @endforeach
-        </select>
-        <input type="submit" placeholder="ارسال">
+            <h3 class="d-flex justify-content-center">إضافة منتج</h3>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="mb-3">
+                    
+                    <label for="productName" class="form-lable"> اسم المنتج</label>
+                    <input type="text" class="form-control" name="productName" placeholder="اكتب اسم المنتج" required>
+                      
+                    <label for="quantity" class="form-label"> الكمية</label>
+                    <input type="number" class="form-control" name="quantity" placeholder="اكتب الكمية الإجمالية" required>
+                    
+                    <label for="category" class="form-label"> اختر التصنيف</label>
+                    <select name="category" class="form-select" aria-label="Default select example">
+                          @foreach ($category as $item)
+                            @if($item->refundable)
+                              <option value="{{$item->id}}">{{$item->Category}} - (قابل للاسترداد)</option>
+                            @else 
+                              <option value="{{$item->id}}">{{$item->Category}} - (غير قابل للاسترداد )</option>
+                            @endif
+                          @endforeach
+                      </select>
+                      <input type="submit" class="btn btn-primary mt-3" value="إضافة المنتج">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 
 </body>

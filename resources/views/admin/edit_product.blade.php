@@ -2,6 +2,7 @@
     <title>تعديل المنتج</title>
 </head>
 <body>
+@include('layouts.nav')
 
     
     <form action="/update_product/{{ $product->id }}" method="post" class="container mt-5">
