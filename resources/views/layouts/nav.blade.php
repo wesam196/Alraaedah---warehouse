@@ -4,6 +4,7 @@
     header .logo {
       font-size: 24px;
       font-weight: bold;
+      
     }
     header {
       background:linear-gradient(45deg, #2f87a2 0, #2f87a2 100%);
@@ -13,16 +14,18 @@
       align-items: center;
       justify-content: space-between;
     }
+
+    header .logo img {
+      width: 200px;
+      height: auto;
+    }
  
 
 
 </style>
 <header>
-    <div >
-        <img src="images/logo.png" width="250" height="80" class="img-fluid" alt="الشعار">
+    <div class="logo">
+        <img src="images/logo.png"  class="img-fluid" alt="الشعار">
     </div>
-<br>
-    <div>لوحة تحكم المنتجات</div>
-  
 
-</header>
+  </header>
