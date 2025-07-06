@@ -5,13 +5,17 @@
   <script>
       window.onload = function() {
           @foreach ($products as $product)
-              @if ($product->quantity <= 10)
+              @if (($product->quantity) - ($product->pledge) <= 10)
                   document.getElementById('alert').innerHTML += 'المنتج {{ $product->productName }} لديه كمية قليلة: {{ $product->quantity }} فقط.<br>';
                  
               @endif
           @endforeach
       };
   </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
 
 </head>
 <body>
@@ -32,6 +36,9 @@
             <div class="alert alert-danger " id="alert" role="alert">
               
             </div>
+
+
+
 
 
     <h1 class="d-flex justify-content-center">الأصناف</h1>
@@ -105,7 +112,9 @@
 
 
 <h1 class="d-flex justify-content-center">المنتجات</h1>
-<table class="table">
+<button onclick="exportPDF()" class="btn btn-primary">📄 تصدير PDF</button>
+
+<table class="table" id="productTable">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
@@ -130,9 +139,9 @@
       @foreach ($category as $cat)
         @if($cat->id == $item->category)
           @if($cat->refundable)
-            <td>{{$cat->Category}} - (قابل للاسترداد)</td>
+            <td>{{$cat->Category}} - قابل للاسترداد</td>
           @else
-            <td>{{$cat->Category}} - (غير قابل للاسترداد)</td>
+            <td>{{$cat->Category}} - غير قابل للاسترداد</td>
           @endif
         @endif
       @endforeach
@@ -181,6 +190,56 @@
         </div>
 
     </form>
+
+
+
+<script>
+function exportPDF() {
+  const originalTable = document.querySelector('#productTable'); // or '.table' in your case
+
+  // Clone the table (deep clone)
+  const clone = originalTable.cloneNode(true);
+
+  // Remove columns 6 and 7 from the clone in THEAD
+  clone.querySelectorAll('thead tr').forEach(tr => {
+    // Remove last two <th> (index 5 and 6)
+    for (let i = 6; i >= 5; i--) {
+      if(tr.children[i]) tr.children[i].remove();
+    }
+  });
+
+  // Remove columns 6 and 7 from each row in TBODY
+  clone.querySelectorAll('tbody tr').forEach(tr => {
+    for (let i = 6; i >= 5; i--) {
+      if(tr.children[i]) tr.children[i].remove();
+    }
+  });
+
+  // Create a container div to hold the clone temporarily (optional, but safer)
+  const container = document.createElement('div');
+  container.style.position = 'fixed'; // prevent page reflow
+  container.style.top = '-9999px';    // hide offscreen
+  container.appendChild(clone);
+  document.body.appendChild(container);
+
+  // Setup html2pdf options
+  const opt = {
+    filename: 'جدول-المنتجات-المختصر.pdf',
+    margin:   [0.5, 0.5, 0.5, 0.5], // cm
+    html2canvas: { scale: 2, logging: false },
+    jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
+  };
+
+  // Generate PDF from the clone
+  html2pdf().set(opt).from(clone).save().then(() => {
+    // Remove the temporary container after saving PDF
+    container.remove();
+  });
+}
+</script>
+
+
+
 
 </body>
 </html>

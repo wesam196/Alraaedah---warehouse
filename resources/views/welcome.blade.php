@@ -59,7 +59,7 @@
     display: none;
   }
 </style>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 
 </head>
 <body>
@@ -71,6 +71,7 @@
     <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
     <button onclick="searchTable()">أدخل</button>
     <button onclick="startQrScanner()" class="btn btn-success">📷 مسح QR</button>
+
   </div>
 
 
@@ -107,22 +108,16 @@
 
 <script>
   function searchTable() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const table = document.getElementById("productTable");
-    const rows = table.getElementsByTagName("tr");
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const rows  = document.querySelectorAll("#productTable tbody tr");
 
-    for (let i = 1; i < rows.length; i++) {
-      const cells = rows[i].getElementsByTagName("td");
-      let found = false;
-      for (let j = 0; j < 2; j++) {
-        if (cells[j].textContent.toLowerCase().includes(input)) {
-          found = true;
-          break;
-        }
-      }
-      rows[i].style.display = found ? "" : "none";
-    }
-  }
+  rows.forEach(row => {
+    const idText = row.cells[0].textContent.toLowerCase();   // first cell (the <th>)
+    const match  = idText.includes(input);
+    row.style.display = (match || input === "") ? "" : "none";
+  });
+}
+
 
   //function to start QR scanner on phone using http request
   function startQrScanner() {
@@ -162,6 +157,14 @@
  
 
 </script>
+
+
+
+
+
+
+
+
 
 </body>
 </html>
