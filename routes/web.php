@@ -26,3 +26,16 @@ Route::get('/edit_pledge/{id}', [ProductController::class, 'editPledge']);
 
 //Route::get('/','\App\Http\controllers\HomeController@index');
 
+
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
