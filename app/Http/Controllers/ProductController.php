@@ -9,6 +9,15 @@ use App\Models\Category;
 
 class ProductController extends Controller
 {
+
+    public function index()
+    {
+        $data = Product::all();
+        $category = Category::all(); // Get all categories for the dropdown
+        return view('welcome', ['products' => $data, 'category' => $category]);
+    }
+
+
    public function create(Request $request)
    {
     $category = Category::findOrFail($request->category);
@@ -53,6 +62,25 @@ class ProductController extends Controller
         $data->save();
 
         return redirect('/dashboard')->with('msg', 'تم تحديث المنتج');
+    }
+
+
+
+    public function editPledge($id)
+    {
+        $data = Product::findOrFail($id);
+        $category = Category::findOrFail($data->category);
+
+        if($category->refundable==true) {
+            $data->pledge +=1; // Update the pledge field only if the category is refundable
+        } else {
+            $data->quantity -=1; // Set pledge to 0 if the category is not refundable
+        }
+        $data->save();
+
+
+
+        return redirect()->back()->with('msg', 'تم تسجيل العهدة بنجاح');
     }
 
 
