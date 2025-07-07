@@ -19,6 +19,7 @@
       width: 200px;
       height: auto;
     }
+
  
 
 
@@ -35,18 +36,45 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+
+  
+  <div>
+  </div>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link text-white" href="/"> الرئيسية </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="/dashboard">لوحة التحكم</a>
-      </li>
+
+
+        @auth
+    @if (auth()->user()->type == 0)
+        <li class="nav-item"><a href="{{ url('dashboard') }}" class="nav-link text-white">لوحة التحكم</a></li>
+    @endif
+@endauth
+
+
       <li class="nav-item">
         <a class="nav-link text-white" href="#">المستخدمين</a>
       </li>
+
+ 
+
+
+
+      <li class="nav-item">
+        <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="btn-danger btn">Logout</button>
+</form>  
+      </li>
+
+
       
     </ul>
+
   </div>
+ 
 </nav>
+

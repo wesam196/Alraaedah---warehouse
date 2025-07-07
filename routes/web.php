@@ -3,9 +3,27 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ControlUsers;
+
+Route::get('/users', [ControlUsers::class, 'index'])->name('users.index');
+
+
+Route::post('/update_user/{id}', [ControlUsers::class, 'update'])->name('users.update');
+Route::get('/delete_user/{id}', [ControlUsers::class, 'delete'])->name('users.delete');
+Route::get('/reset_password/{id}', [ControlUsers::class, 'resetPassword'])->name('users.reset_password');
+
+
+//Route::get('/','\App\Http\controllers\HomeController@index');
 
 
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    
 
 Route::get('/',[ProductController::class,'index']);
 
@@ -23,19 +41,17 @@ Route::post('/update_product/{id}', [ProductController::class, 'update']);
 Route::get('/edit_pledge/{id}', [ProductController::class, 'editPledge']);
 
 
+//Route::get('/dashboard',[CategoryController::class,'index']);
 
-//Route::get('/','\App\Http\controllers\HomeController@index');
-
-
-
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+
+    Route::get('/addregister', function () {
+        return view('auth.register');
+    })->name('addregister');
+
+    
 });
 

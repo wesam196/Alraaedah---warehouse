@@ -66,13 +66,19 @@
 
 @include('layouts.nav')
 
+
+
+
+
+
 <div class="container">
   <div class="controls">
     <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
     <button onclick="searchTable()">أدخل</button>
     <button onclick="startQrScanner()" class="btn btn-success">📷 مسح QR</button>
 
-  </div>
+
+</div>
 
 
   <table id="productTable">
