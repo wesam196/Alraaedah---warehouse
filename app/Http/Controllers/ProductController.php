@@ -20,6 +20,8 @@ class ProductController extends Controller
 
    public function create(Request $request)
    {
+    if(auth()->user()->usertype >= 1){
+    
     $category = Category::findOrFail($request->category);
          // Validate the request data
        $data = new Product;
@@ -30,25 +32,39 @@ class ProductController extends Controller
        $data->save();
 
        return redirect()->back()->with('msg', 'تم إضافة المنتج');
+    }
+    else {
+        abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+    }
+   
    }
 
     public function delete($id)
     {
+        if(auth()->user()->usertype >= 1){
          $data = Product::findOrFail($id);
          $data->delete();
     
          return redirect()->back()->with('msg', 'تم حذف المنتج');
+        } else {
+            abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+    }
     }
 
     public function edit($id)
     {
+        if(auth()->user()->usertype >= 1){
         $data = Product::findOrFail($id);
         $categories = Category::all(); // Get all categories for the dropdown
         return view('admin.edit_product', ['product' => $data, 'categories' => $categories]);
+        } else {
+            abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+        }
     }
 
     public function update(Request $request, $id)
     {
+        if(auth()->user()->usertype >= 1){
         $category = Category::findOrFail($request->category);
         $data = Product::findOrFail($id);
         $data->productName = $request->productName;
@@ -62,6 +78,10 @@ class ProductController extends Controller
         $data->save();
 
         return redirect('/dashboard')->with('msg', 'تم تحديث المنتج');
+    }
+    else {
+        abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+    }
     }
 
 
@@ -81,7 +101,8 @@ class ProductController extends Controller
 
 
         return redirect()->back()->with('msg', 'تم تسجيل العهدة بنجاح');
-    }
+    
+}
 
 
 

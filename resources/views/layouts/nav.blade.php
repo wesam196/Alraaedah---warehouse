@@ -49,15 +49,22 @@
 
 
         @auth
-    @if (auth()->user()->type == 0)
+    @if (auth()->user()->usertype >= 1)
         <li class="nav-item"><a href="{{ url('dashboard') }}" class="nav-link text-white">لوحة التحكم</a></li>
     @endif
-@endauth
+    @endauth
+
+    @auth
+    @if (auth()->user()->usertype >= 2)
+        <li class="nav-item"><a href="{{ url('users') }}" class="nav-link text-white">إدارة المستخدمين</a></li>
+        <li class="nav-item"><a href="{{ url('register') }}" class="nav-link text-white"> إضافة مستخدم</a> </li>
+        @endif
+    @endauth
+      
+        <li class="nav-item"><a href="{{ url('user/profile') }}" class="nav-link text-white">إدارة الحساب</a></li>
 
 
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#">المستخدمين</a>
-      </li>
+      
 
  
 
