@@ -1,3 +1,5 @@
+@include('layouts.header')
+
 <x-app-layout >
 @include('layouts.nav')
 
