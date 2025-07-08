@@ -6,7 +6,7 @@
       window.onload = function() {
           @foreach ($products as $product)
               @if (($product->quantity) - ($product->pledge) <= 10)
-                  document.getElementById('alert').innerHTML += 'المنتج {{ $product->productName }} لديه كمية قليلة: {{ $product->quantity }} فقط.<br>';
+                  document.getElementById('alert').innerHTML += 'المنتج {{ $product->productName }} لديه كمية قليلة: {{ $product->quantity - $product->pledge }} فقط.<br>';
                  
               @endif
           @endforeach
@@ -33,7 +33,8 @@
 
 
 
-            <div class="alert alert-danger " id="alert" role="alert">
+            <div class=" alert-danger " id="alert" role="alert" display="none">
+                
               
             </div>
 
