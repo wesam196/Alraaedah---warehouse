@@ -41,6 +41,7 @@ Route::post('/update_product/{id}', [ProductController::class, 'update']);
 
 Route::get('/edit_pledge/{id}', [ProductController::class, 'editPledge']);
 
+Route::get('/return_pledge/{id}', [ProductController::class, 'returnPledge']);
 
 Route::get('/dashboard',[CategoryController::class,'index']);
 

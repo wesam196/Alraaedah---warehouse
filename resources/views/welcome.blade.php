@@ -66,7 +66,12 @@
 
 @include('layouts.nav')
 
-
+@if(session()->has('msg'))
+            <div class="alert alert-success">
+            {{session()->get('msg')}}
+            <button data-dismiss="alert" class="close">X</button>
+            </div>
+            @endif
 
 
 
@@ -105,7 +110,16 @@
         @else
           <td>تصنيف غير معروف</td>
         @endif
-        <td><a href="{{ url('/edit_pledge', $item->id) }}" class="btn btn-primary">اخذ عهدة</a></td>
+        <td>
+          <a href="{{ url('/edit_pledge', $item->id) }}" class="btn btn-primary">اخذ عهدة</a>
+
+           
+              @if ($cat->refundable)
+                <a href="{{ url('/return_pledge', $item->id) }}" class="btn btn-primary">ارجاع عهدة</a>
+              
+              @endif
+          
+        </td>
       </tr>
       @endforeach
     </tbody>

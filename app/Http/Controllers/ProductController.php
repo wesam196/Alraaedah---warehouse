@@ -105,5 +105,26 @@ class ProductController extends Controller
 }
 
 
+    public function returnPledge($id)
+    {
+        $data = Product::findOrFail($id);
+        $category = Category::findOrFail($data->category);
+
+        if($category->refundable==true && $data->pledge > 0) {
+            $data->pledge -=1; // Update the pledge field only if the category is refundable
+        $data->save();
+        
+        
+        return redirect()->back()->with('msg', 'تم ارجاع العهدة بنجاح');
+         
+    }
+    else {
+        abort(404); // Return a 403 Forbidden response if the user does not have permission
+    }
+}
+    
+    
+
+
 
 }
