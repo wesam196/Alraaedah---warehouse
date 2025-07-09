@@ -52,6 +52,7 @@
       <th scope="col">اسم التصنيف</th>
       <th scope="col">نوع التصنيف</th>
       <th scope="col">حذف التصنيف</th>
+      <th scope="col">تعديل التصنيف</th>
     </tr>
   </thead>
   
@@ -68,6 +69,8 @@
         @endif
       
       <td><a  onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->Category}} )')" href="{{url('/delete_category',$item->id)}}" class="btn btn-danger">حذف</a></td>
+    
+      <td><a href="{{url('/edit_category',$item->id)}}" class="btn btn-primary">تعديل</a></td>
     </tr>
    
     @endforeach

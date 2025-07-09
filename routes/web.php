@@ -18,7 +18,7 @@ Route::middleware([
 ])->group(function () {
     
     Route::get('/users', [ControlUsers::class, 'index'])->name('users.index');
-
+     
 
 Route::post('/update_user/{id}', [ControlUsers::class, 'update'])->name('users.update');
 Route::get('/delete_user/{id}', [ControlUsers::class, 'delete'])->name('users.delete');
@@ -32,6 +32,9 @@ Route::get('/',[ProductController::class,'index']);
 Route::get('/dashboard',[CategoryController::class,'index']);
 Route::post('/add_category', [CategoryController::class,'create']);
 Route::get('/delete_category/{id}' , [CategoryController::class, 'delete']);
+Route::get('/edit_category/{id}' , [CategoryController::class, 'edit']);
+Route::post('/update_category/{id}' , [CategoryController::class, 'update']);
+
 
 Route::post('/add_product', [ProductController::class, 'create']);
 Route::get('/delete_product/{id}', [ProductController::class, 'delete']);

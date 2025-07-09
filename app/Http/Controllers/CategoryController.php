@@ -48,5 +48,27 @@ class CategoryController extends Controller
         }
     }
 
+    public function edit($id){
+        if(auth()->user()->usertype >= 1){
+        $data = category::findOrFail($id);
+        return view('admin.edit_category', ['category' => $data]);
+        } else {
+            abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+        }
+    }
+
+    public function update(Request $request, $id){
+        if(auth()->user()->usertype >= 1){
+        $data = category::findOrFail($id);
+        $data->Category = $request->Category;
+        $data->refundable = $request->refundable == '1' ? true : false; // Convert to boolean
+        $data->save();
+
+        return redirect('/dashboard')->with('msg', 'تم تعديل التصنيف');
+        } else {
+            abort(403, 'Access Denied'); // Return a 403 Forbidden response if the user does not have permission
+        }
+    }
+
 
 }
