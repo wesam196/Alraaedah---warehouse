@@ -60,6 +60,7 @@
   }
 </style>
 
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 </head>
 <body>
@@ -80,8 +81,14 @@
   <div class="controls">
     <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
     <button onclick="searchTable()">أدخل</button>
-    <button onclick="startQrScanner()" class="btn btn-success">📷 مسح QR</button>
+    <button id="scanBtn">مسح QR</button>
+  <button id="stopBtn" style="display: none;">أوقف الكاميرا</button>
 
+    
+  
+  
+  <div id="qr-reader" style="display: none;"> 
+  </div>
 
 </div>
 
@@ -139,42 +146,55 @@
 }
 
 
-  //function to start QR scanner on phone using http request
-  function startQrScanner() {
-    const qrReader = document.getElementById("qr-reader");
-    if (qrReader.style.display === "none") {
-      qrReader.style.display = "block";
-      const html5QrCode = new Html5Qrcode("qr-reader");
-      html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText, decodedResult) => {
-          console.log(`Decoded text: ${decodedText}`, decodedResult);
-          // Here you can handle the decoded text, e.g., search the table
-          const searchInput = document.getElementById("searchInput");
-          searchInput.value = decodedText;
-          searchTable();
-          html5QrCode.stop();
-          qrReader.style.display = "none";
-        },
-        (errorMessage) => {
-          console.log(`QR Code no longer in front of camera. Error: ${errorMessage}`);
-        }
-      ).catch(err => {
-        console.error(`Unable to start QR scanner: ${err}`);
-      });
-    } else {
-      qrReader.style.display = "none";
-      const html5QrCode = new Html5Qrcode("qr-reader");
-      html5QrCode.stop().then(() => {
-        console.log("QR scanner stopped.");
-      }).catch(err => {
-        console.error(`Unable to stop QR scanner: ${err}`);
-      });
-    }
-  } 
+  
+    const scanBtn = document.getElementById("scanBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const searchInput = document.getElementById("searchInput");
+    const qrReaderContainer = document.getElementById("qr-reader");
 
- 
+    let html5QrCode;
+
+    scanBtn.addEventListener("click", async () => {
+      qrReaderContainer.style.display = "block";
+      stopBtn.style.display = "inline-block";
+
+      html5QrCode = new Html5Qrcode("qr-reader");
+
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        const backCamera = devices.find(cam =>
+          cam.label.toLowerCase().includes('back')
+        ) || devices[0];
+
+        await html5QrCode.start(
+          { deviceId: { exact: backCamera.id } },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            searchInput.value = decodedText;
+
+            html5QrCode.stop().then(() => {
+              qrReaderContainer.style.display = "none";
+              stopBtn.style.display = "none";
+            });
+          },
+          (errorMessage) => {
+            // Optional: handle scan errors
+          }
+        );
+      } catch (err) {
+        alert("Camera error: " + err.message);
+        stopBtn.style.display = "none";
+      }
+    });
+
+    stopBtn.addEventListener("click", async () => {
+      if (html5QrCode) {
+        await html5QrCode.stop();
+        qrReaderContainer.style.display = "none";
+        stopBtn.style.display = "none";
+      }
+    });
+  
 
 </script>
 
