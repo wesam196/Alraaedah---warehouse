@@ -128,6 +128,7 @@
       <th scope="col">التصنيف</th>
       <th scope="col">تعديل المنتج</th>
       <th scope="col">حذف المنتج</th>
+      <th scope="col">إنشاء QR</th>
       
     </tr>
   </thead>
@@ -153,6 +154,9 @@
       <td><a href="{{url('/edit_product',$item->id)}}" class="btn btn-primary">تعديل</a></td>
       <td><a onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->productName}} )')" href="{{url('/delete_product',$item->id)}}" class="btn btn-danger">حذف</a></td>
    
+      <td>
+        <button onclick="QRgenerator({{$item->id}})" class="btn btn-primary">إنشاء QR</button>
+        </td>
     </tr>
    
     @endforeach
@@ -240,6 +244,29 @@ function exportPDF() {
     container.remove();
   });
 }
+</script>
+
+<script>
+function QRgenerator(productId) {
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${productId}&size=150x150`;
+
+  fetch(qrCodeUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `product-${productId}-qr.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl); // cleanup
+    })
+    .catch(err => {
+      console.error("QR download failed:", err);
+    });
+}
+
 </script>
 
 
