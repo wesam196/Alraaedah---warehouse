@@ -211,14 +211,14 @@ function exportPDF() {
   // Remove columns 6 and 7 from the clone in THEAD
   clone.querySelectorAll('thead tr').forEach(tr => {
     // Remove last two <th> (index 5 and 6)
-    for (let i = 6; i >= 5; i--) {
+    for (let i = 7; i >= 5; i--) {
       if(tr.children[i]) tr.children[i].remove();
     }
   });
 
   // Remove columns 6 and 7 from each row in TBODY
   clone.querySelectorAll('tbody tr').forEach(tr => {
-    for (let i = 6; i >= 5; i--) {
+    for (let i = 7; i >= 5; i--) {
       if(tr.children[i]) tr.children[i].remove();
     }
   });
