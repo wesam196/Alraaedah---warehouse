@@ -16,7 +16,13 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
-
+<style>
+ .addProductForm{
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  margin-bottom: 20px;
+ }
+</style>
 </head>
 <body>
 
@@ -41,43 +47,45 @@
 
 
 
+     <div class="d-flex justify-content-center  vh-30 align-items-center" style="padding-top: 20px; padding-bottom: 20px;">
+  <div class="shadow rounded" style="width: 200px; height: 50px; border: 1px solid #ccc;">
+    <h3 class="d-flex justify-content-center align-items-center h-100 m-0">الأصناف</h3>
+  </div>
+</div>
 
-    <h1 class="d-flex justify-content-center">الأصناف</h1>
-   
-
-        <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">اسم التصنيف</th>
-      <th scope="col">نوع التصنيف</th>
-      <th scope="col">حذف التصنيف</th>
-      <th scope="col">تعديل التصنيف</th>
-    </tr>
-  </thead>
+    <table class="table table-striped" >
+      <thead  style="background-color:#395470;color:white;">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">اسم التصنيف</th>
+          <th scope="col">نوع التصنيف</th>
+          <th scope="col">حذف التصنيف</th>
+          <th scope="col">تعديل التصنيف</th>
+        </tr>
+      </thead>
   
-  <tbody>
-  @foreach ($category as $item)
-    <tr>
-      <th scope="row">{{$item->id}}</th>
-      <td>{{$item->Category}}</td>
-      <td>
-        @if($item->refundable)
-          <span class="badge bg-success">قابل للاسترداد</span>
-        @else
-          <span class="badge bg-danger">غير قابل للاسترداد</span>
-        @endif
-      
-      <td><a  onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->Category}} )')" href="{{url('/delete_category',$item->id)}}" class="btn btn-danger">حذف</a></td>
-    
-      <td><a href="{{url('/edit_category',$item->id)}}" class="btn btn-primary">تعديل</a></td>
-    </tr>
-   
-    @endforeach
-  </tbody>
+        <tbody>
+          @foreach ($category as $item)
+          <tr>
+            <th scope="row">{{$item->id}}</th>
+            <td>{{$item->Category}}</td>
+            <td>
+              @if($item->refundable)
+                <span class=" btn btn-success">مستردة </span>
+              @else
+                <span class="btn btn-success">غير مستردة </span>
+              @endif
+            
+            <td><a  onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->Category}} )')" href="{{url('/delete_category',$item->id)}}" class="btn btn-danger"  style="background-color:#c91818;">حذف</a></td>
+          
+            <td><a href="{{url('/edit_category',$item->id)}}" class="btn btn-primary" style="background-color:#395470;">تعديل</a></td>
+          </tr>
+        
+          @endforeach
+        </tbody>
   
  
-</table>
+    </table>
 
 
 
@@ -85,9 +93,15 @@
 
 
     
-    <form action="{{url('/add_category')}}" method="post" class="container mt-5">
+    <form action="{{url('/add_category')}}" method="post" class="container mt-5 addProductForm">
         @csrf
-        <h1 class="d-flex justify-content-center">إضافة تصنيف</h1>
+        
+        <div class="d-flex justify-content-center  vh-30 align-items-center" style="padding-top: 20px; padding-bottom: 20px;">
+  <div class="shadow rounded" style="width: 200px; height: 50px; border: 1px solid #ccc;">
+    <h3 class="d-flex justify-content-center align-items-center h-100 m-0">إضافة تصنيف</h3>
+  </div>
+</div>
+
         <div class="container">
           <div class="row">
               <div class="col-md-6 offset-md-3">
@@ -97,10 +111,10 @@
                       <br>
                       <label for="refundable" class="form-label">نوع التصنيف</label>
                       <select name="refundable" class="form-select" aria-label="Default select example">
-                          <option value="1">قابل للاسترداد</option>
-                          <option value="0">غير قابل للاسترداد</option>
+                          <option value="1">مستردة </option>
+                          <option value="0">غير مستردة </option>
                       </select>
-                      <input type="submit" placeholder="ارسال" class="btn btn-primary mt-3">
+                      <input type="submit" placeholder="ارسال" class="btn btn-primary mt-3" style="background-color:#395470;">
         </div>
               </div>
           </div>   
@@ -108,67 +122,78 @@
           
     </form>
 
-<hr>
-<hr>
-<hr>
-<hr>
-<hr>
 
 
-<h1 class="d-flex justify-content-center">المنتجات</h1>
-<button onclick="exportPDF()" class="btn btn-primary">📄 تصدير PDF</button>
 
-<table class="table" id="productTable">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">اسم المنتج</th>
-      <th scope="col">الكمية الإجمالية</th>
-      <th scope="col">الكمية المتواجدة</th>
-      <th scope="col">التصنيف</th>
-      <th scope="col">تعديل المنتج</th>
-      <th scope="col">حذف المنتج</th>
-      <th scope="col">إنشاء QR</th>
-      
-    </tr>
-  </thead>
-  
-  <tbody>
-  @foreach ($products as $item)
-    <tr>
-      <th scope="row">{{$item->id}}</th>
-      <td>{{$item->productName}}</td>
-      <td>{{$item->quantity}}</td>
-      <td> <span class="badge bg-danger">{{$item->quantity - $item->pledge}}</span> </td>
-      
-      @foreach ($category as $cat)
-        @if($cat->id == $item->category)
-          @if($cat->refundable)
-            <td>{{$cat->Category}} - قابل للاسترداد</td>
-          @else
-            <td>{{$cat->Category}} - غير قابل للاسترداد</td>
+
+
+<div class="d-flex justify-content-center  vh-30 align-items-center" style="padding-top: 20px; padding-bottom: 20px;">
+  <div class="shadow rounded" style="width: 200px; height: 50px; border: 1px solid #ccc;">
+    <h3 class="d-flex justify-content-center align-items-center h-100 m-0">المنتجات</h3>
+  </div>
+</div>
+
+<button onclick="exportPDF()" class="btn btn-danger" style="background-color:#910d1a; border:none">📄 تصدير PDF</button>
+
+<div class="table-responsive">
+  <table class="table table-striped w-100" id="productTable">
+    <thead style="background-color:#395470;color:white;">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">اسم المنتج</th>
+        <th scope="col">الكمية الإجمالية</th>
+        <th scope="col">الكمية المتواجدة</th>
+        <th scope="col">التصنيف</th>
+        <th scope="col">تعديل المنتج</th>
+        <th scope="col">حذف المنتج</th>
+        <th scope="col">إنشاء QR</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      @foreach ($products as $item)
+      <tr>
+        <th scope="row">{{$item->id}}</th>
+        <td>{{$item->productName}}</td>
+        <td>{{$item->quantity}}</td>
+        <td><span>{{$item->quantity - $item->pledge}}</span></td>
+        
+        @foreach ($category as $cat)
+          @if($cat->id == $item->category)
+            @if($cat->refundable)
+              <td>{{$cat->Category}} - قابل للاسترداد</td>
+            @else
+              <td>{{$cat->Category}} - غير قابل للاسترداد</td>
+            @endif
           @endif
-        @endif
-      @endforeach
-      
-      <td><a href="{{url('/edit_product',$item->id)}}" class="btn btn-primary">تعديل</a></td>
-      <td><a onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->productName}} )')" href="{{url('/delete_product',$item->id)}}" class="btn btn-danger">حذف</a></td>
-   
-      <td>
-        <button onclick="QRgenerator({{$item->id}})" class="btn btn-primary">إنشاء QR</button>
+        @endforeach
+        
+        <td>
+          <a href="{{url('/edit_product',$item->id)}}" class="btn btn-primary" style="background-color:#20572d;">تعديل</a>
         </td>
-    </tr>
-   
-    @endforeach
-  </tbody>
-</table>
+        <td>
+          <a onclick="return confirm('هل أنت متأكد تود حذف  ( {{$item->productName}} )')" href="{{url('/delete_product',$item->id)}}" class="btn btn-danger" style="background-color:#c91818;">حذف</a>
+        </td>
+        <td>
+          <button onclick="QRgenerator({{$item->id}})" class="btn btn-primary" style="background-color:#395470;">إنشاء QR</button>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+
 
 
     <br><br><br>
 
-    <form action="{{url('/add_product')}}" method="post" class="container mt-5">
+    <form action="{{url('/add_product')}}" method="post" class="container mt-5 addProductForm" >
         @csrf
-            <h3 class="d-flex justify-content-center">إضافة منتج</h3>
+            <div class="d-flex justify-content-center  vh-30 align-items-center" style="padding-top: 20px; padding-bottom: 20px;">
+  <div class="shadow rounded" style="width: 200px; height: 50px; border: 1px solid #ccc;">
+    <h3 class="d-flex justify-content-center align-items-center h-100 m-0">إضافة منتج</h3>
+  </div>
+</div>
 
         <div class="container">
             <div class="row">
@@ -191,7 +216,7 @@
                             @endif
                           @endforeach
                       </select>
-                      <input type="submit" class="btn btn-primary mt-3" value="إضافة المنتج">
+                      <input type="submit" class="btn btn-primary mt-3" value="إضافة المنتج" style="background-color:#395470;">
                     </div>
                 </div>
             </div>

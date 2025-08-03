@@ -1,13 +1,7 @@
 @include('layouts.header')
 
 <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    direction: rtl;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-  }
+ 
   .container {
     padding: 20px;
   }
@@ -80,8 +74,8 @@
 <div class="container">
   <div class="controls">
     <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
-    <button onclick="searchTable()">أدخل</button>
-    <button id="scanBtn">مسح QR</button>
+    <button onclick="searchTable()" style="background-color:#395470;">أدخل</button>
+    <button id="scanBtn" style="background-color:#395470;">مسح QR</button>
   <button id="stopBtn" style="display: none;">أوقف الكاميرا</button>
 
     
@@ -93,8 +87,11 @@
 </div>
 
 
-  <table id="productTable">
-    <thead>
+  <table id="productTable" class="table table-striped">
+
+
+
+    <thead  style="background-color:#395470;color:white;">
       <tr>
         <th scope="col">#</th>
         <th scope="col">اسم المنتج</th>
@@ -118,11 +115,11 @@
           <td>تصنيف غير معروف</td>
         @endif
         <td>
-          <a href="{{ url('/edit_pledge', $item->id) }}" class="btn btn-primary">اخذ عهدة</a>
+          <a href="{{ url('/edit_pledge', $item->id) }}" class="btn btn-primary" style="background-color:#202457">اخذ عهدة</a>
 
            
               @if ($cat->refundable)
-                <a href="{{ url('/return_pledge', $item->id) }}" class="btn btn-primary">ارجاع عهدة</a>
+                <a href="{{ url('/return_pledge', $item->id) }}" class="btn btn-primary" style="background-color:#20572d">ارجاع عهدة</a>
               
               @endif
           
